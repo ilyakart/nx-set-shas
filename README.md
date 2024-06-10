@@ -5,6 +5,8 @@ width="100%" alt="Nx - Smart, Extensible Build Framework"></p>
 
 ✨ A Github Action which sets the base and head SHAs required for the `nx affected` commands in CI
 
+This fork is for adding "-leo pipefail {0}" to the bash shell steps in action.yml - this to avoid failure with non-found node command
+
 - [Example Usage](#example-usage)
 - [Configuration Options](#configuration-options)
 - [Permissions in v2+](#permissions-in-v2)
