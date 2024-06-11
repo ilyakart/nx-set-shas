@@ -49,8 +49,9 @@ runs:
         working_directory: ${{ inputs.working-directory }}
         working_id: ${{ inputs.workflow-id }}
       run: |
-        source ~/.bashrc
         echo "$PATH is:" $PATH
+        source ~/.nvm/nvm.sh
+        nvm use 20
         echo "which node is:" 
         which node || echo "no node found"
         node "$GITHUB_ACTION_PATH/dist/index.js" "$gh_token" "$main_branch_name" "$error_on_no_successful_workflow" "$last_successful_event" "$working_directory" "$working_id"
