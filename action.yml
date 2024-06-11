@@ -40,7 +40,7 @@ runs:
   steps:
     - name: Set base and head SHAs used for nx affected
       id: setSHAs
-      shell: bash -leo
+      shell: bash
       env:
         gh_token: ${{ github.token }}
         main_branch_name: ${{ inputs.main-branch-name }}
@@ -48,11 +48,14 @@ runs:
         last_successful_event: ${{ inputs.last-successful-event }}
         working_directory: ${{ inputs.working-directory }}
         working_id: ${{ inputs.workflow-id }}
-      run: node "$GITHUB_ACTION_PATH/dist/index.js" "$gh_token" "$main_branch_name" "$error_on_no_successful_workflow" "$last_successful_event" "$working_directory" "$working_id"
+      run: |
+        set -leo
+        node "$GITHUB_ACTION_PATH/dist/index.js" "$gh_token" "$main_branch_name" "$error_on_no_successful_workflow" "$last_successful_event" "$working_directory" "$working_id"
 
     - name: Log base and head SHAs used for nx affected
-      shell: bash -leo 
+      shell: bash 
       run: |
+        set -leo
         echo "Base SHA"
         echo ${{ steps.setSHAs.outputs.base }}
         echo ""
@@ -61,9 +64,10 @@ runs:
         echo ""
 
     - name: Optionally set the derived SHAs as NX_BASE and NX_HEAD environment variables for the current job
-      shell: bash -leo 
+      shell: bash
       if: ${{ inputs.set-environment-variables-for-job == 'true' }}
       run: |
+        set -leo
         echo "NX_BASE=${{ steps.setSHAs.outputs.base }}" >> $GITHUB_ENV
         echo "NX_HEAD=${{ steps.setSHAs.outputs.head }}" >> $GITHUB_ENV
         echo "NX_BASE and NX_HEAD environment variables have been set for the current Job"
