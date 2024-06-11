@@ -49,13 +49,15 @@ runs:
         working_directory: ${{ inputs.working-directory }}
         working_id: ${{ inputs.workflow-id }}
       run: |
-        set -leo
+        source ~/.bashrc
+        echo "$PATH is:" $PATH
+        echo "which node is:" 
+        which node || echo "no node found"
         node "$GITHUB_ACTION_PATH/dist/index.js" "$gh_token" "$main_branch_name" "$error_on_no_successful_workflow" "$last_successful_event" "$working_directory" "$working_id"
 
     - name: Log base and head SHAs used for nx affected
       shell: bash 
       run: |
-        set -leo
         echo "Base SHA"
         echo ${{ steps.setSHAs.outputs.base }}
         echo ""
@@ -67,7 +69,6 @@ runs:
       shell: bash
       if: ${{ inputs.set-environment-variables-for-job == 'true' }}
       run: |
-        set -leo
         echo "NX_BASE=${{ steps.setSHAs.outputs.base }}" >> $GITHUB_ENV
         echo "NX_HEAD=${{ steps.setSHAs.outputs.head }}" >> $GITHUB_ENV
         echo "NX_BASE and NX_HEAD environment variables have been set for the current Job"
